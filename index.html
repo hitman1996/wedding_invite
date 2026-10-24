@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Wedding Invitation | Sahil & Muskan</title>
+
+  <!-- OpenGraph metadata for WhatsApp / iMessage card preview -->
+  <meta property="og:title" content="Royal Wedding Invitation · Sahil & Muskan" />
+  <meta property="og:description" content="Nov 22 & 23, 2026 · Shahi Darbar Lawn, Miraj & Kokitkar Garden, Sangli. You are warmly invited!" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#2b030b" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Confetti Canvas Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --gold-1: #fff1b8;
+      --gold-2: #f2cb6c;
+      --gold-3: #d4af37;
+      --gold-4: #8f6c1e;
+      --gold-5: #543e0a;
+      --crimson-dark: #1a0106;
+      --crimson-base: #33030d;
+      --crimson-mid: #520716;
+      --crimson-bright: #7c0c23;
+      --card-bg: rgba(30, 2, 8, 0.78);
+      --card-border: rgba(242, 203, 108, 0.42);
+      --text-main: #fcf6e8;
+      --text-dim: #d9bf9b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--crimson-dark);
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(124, 12, 35, 0.35) 0%, transparent 65%),
+        radial-gradient(circle at 50% 80%, rgba(82, 7, 22, 0.45) 0%, transparent 70%),
+        repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.02) 0px, rgba(212, 175, 55, 0.02) 1px, transparent 1px, transparent 18px);
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fixed Falling Petals Canvas */
+    #petals-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* ============================================================
+       GATEFOLD DOORS & WAX SEAL OVERLAY
+       ============================================================ */
+    #reveal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: auto;
+      transition: visibility 1.2s ease;
+    }
+
+    #reveal-overlay.dismissed {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-door {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50.5%;
+      background: linear-gradient(135deg, #180005 0%, #3d030f 50%, #150004 100%);
+      box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.95);
+      transition: transform 1.3s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .door-left {
+      left: 0;
+      border-right: 2px solid rgba(242, 203, 108, 0.7);
+      transform-origin: left center;
+    }
+
+    .door-right {
+      right: 0;
+      border-left: 2px solid rgba(242, 203, 108, 0.7);
+      transform-origin: right center;
+    }
+
+    .door-pattern {
+      position: absolute;
+      inset: 15px;
+      border: 1px solid rgba(242, 203, 108, 0.35);
+      background-image: 
+        radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%),
+        repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 20px, rgba(212, 175, 55, 0.03) 20px, rgba(212, 175, 55, 0.03) 21px);
+    }
+
+    .door-initial {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(3.5rem, 10vw, 5.5rem);
+      color: rgba(242, 203, 108, 0.16);
+      font-weight: 700;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+    }
+    .door-left .door-initial { right: 28px; }
+    .door-right .door-initial { left: 28px; }
+
+    #reveal-overlay.open .door-left {
+      transform: translateX(-105%) scaleX(0.96);
+    }
+    #reveal-overlay.open .door-right {
+      transform: translateX(105%) scaleX(0.96);
+    }
+
+    /* WAX SEAL MEDALLION */
+    .wax-seal-wrapper {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    #reveal-overlay.open .wax-seal-wrapper {
+      opacity: 0;
+      transform: scale(0.65) translateY(-20px);
+      pointer-events: none;
+    }
+
+    .ribbon-tail-container {
+      position: absolute;
+      top: 75px;
+      width: 110px;
+      height: 90px;
+      display: flex;
+      justify-content: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .ribbon-left, .ribbon-right {
+      width: 22px;
+      height: 75px;
+      background: linear-gradient(180deg, #aa8222 0%, #543e0a 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    }
+    .ribbon-left {
+      transform: rotate(18deg) translate(-10px, 0);
+    }
+    .ribbon-right {
+      transform: rotate(-18deg) translate(10px, 0);
+    }
+
+    .wax-seal {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: 
+        radial-gradient(circle at 35% 30%, #a71835 0%, #68051a 50%, #30000a 90%);
+      box-shadow: 
+        0 12px 28px rgba(0, 0, 0, 0.8),
+        inset 0 4px 10px rgba(255, 140, 160, 0.4),
+        inset 0 -6px 14px rgba(0, 0, 0, 0.8),
+        0 0 0 5px rgba(167, 24, 53, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 3;
+      border: 3px dashed rgba(242, 203, 108, 0.6);
+      animation: waxPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes waxPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 12px 28px rgba(0,0,0,0.8), 0 0 25px rgba(212, 175, 55, 0.35); }
+      50% { transform: scale(1.04); box-shadow: 0 14px 34px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.65); }
+    }
+
+    .seal-inner {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(242, 203, 108, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .seal-monogram {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold-2);
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(242, 203, 108, 0.5);
+      letter-spacing: 2px;
+    }
+    .seal-crown {
+      width: 22px;
+      height: 18px;
+      fill: var(--gold-2);
+      margin-bottom: 2px;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));
+    }
+
+    .seal-tap-badge {
+      margin-top: 36px;
+      padding: 7px 18px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(143, 108, 30, 0.95));
+      color: #200208;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 14px rgba(242, 203, 108, 0.5);
+      animation: badgeBounce 1.8s ease-in-out infinite;
+      z-index: 5;
+    }
+
+    @keyframes badgeBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* ============================================================
+       3D THEATER VELVET STAGE CURTAINS
+       ============================================================ */
+    .stage-curtains-container {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .curtain-drape {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 52%;
+      background: repeating-linear-gradient(
+        90deg,
+        #2a0209 0px,
+        #4f0614 18px,
+        #7a0c21 34px,
+        #3b040e 52px,
+        #1d0106 70px
+      );
+      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.9);
+      transition: transform 1.6s cubic-bezier(0.65, 0, 0.25, 1) 0.3s;
+    }
+
+    .curtain-left {
+      left: 0;
+      transform-origin: left top;
+    }
+    .curtain-right {
+      right: 0;
+      transform-origin: right top;
+    }
+
+    .curtain-valance {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: linear-gradient(180deg, #500615 0%, #290209 100%);
+      border-bottom: 3px solid var(--gold-3);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-around;
+      z-index: 4;
+      transition: opacity 1.2s ease 0.8s;
+    }
+
+    .valance-swag {
+      width: 18%;
+      height: 48px;
+      border-radius: 0 0 50% 50%;
+      background: linear-gradient(180deg, #7c0c23 0%, #30020a 100%);
+      border: 1px solid rgba(242, 203, 108, 0.4);
+      border-top: none;
+    }
+
+    #reveal-overlay.open .curtain-left {
+      transform: translateX(-105%) scaleX(0.85);
+    }
+    #reveal-overlay.open .curtain-right {
+      transform: translateX(105%) scaleX(0.85);
+    }
+    #reveal-overlay.open .curtain-valance {
+      opacity: 0;
+    }
+
+    /* ============================================================
+       TOP CONTROLS (AUDIO & REPLAY)
+       ============================================================ */
+    .floating-controls {
+      position: fixed;
+      top: 14px;
+      left: 0;
+      right: 0;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .glass-btn {
+      pointer-events: auto;
+      background: rgba(43, 3, 11, 0.75);
+      border: 1px solid rgba(242, 203, 108, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 7px 14px;
+      border-radius: 24px;
+      color: var(--gold-2);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .glass-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* ============================================================
+       MAIN CONTENT CONTAINER
+       ============================================================ */
+    .page-wrapper {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 58px 18px 48px;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .gold-title {
+      font-family: 'Cinzel Decorative', serif;
+      background: linear-gradient(135deg, var(--gold-1) 0%, var(--gold-2) 40%, var(--gold-3) 70%, var(--gold-4) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .cursive-font {
+      font-family: 'Great Vibes', cursive;
+      color: var(--gold-2);
+    }
+
+    /* Bismillah & Invitation Header */
+    .header-card {
+      text-align: center;
+      padding: 26px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .header-card::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px dashed rgba(242, 203, 108, 0.25);
+      border-radius: 14px;
+      pointer-events: none;
+    }
+
+    .bismillah-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      color: var(--gold-2);
+      margin-bottom: 12px;
+    }
+
+    .header-sub {
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 18px;
+    }
+
+    .couple-names {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 6.5vw, 2.7rem);
+      line-height: 1.25;
+      margin: 8px 0;
+      font-weight: 700;
+    }
+    .ampersand {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.4rem;
+      color: var(--gold-2);
+      display: block;
+      margin: -6px 0;
+      -webkit-text-fill-color: var(--gold-2);
+    }
+
+    /* Lineage & Family Intro */
+    .lineage-container {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(242, 203, 108, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--text-dim);
+    }
+    .lineage-item strong {
+      color: var(--gold-2);
+      font-family: 'Playfair Display', serif;
+      font-size: 0.94rem;
+      display: block;
+    }
+
+    /* ============================================================
+       HEART-SHAPED SCRATCH TO REVEAL CARD
+       ============================================================ */
+    .scratch-section {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .scratch-prompt {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.05rem;
+      color: var(--gold-2);
+      margin-bottom: 4px;
+    }
+    .scratch-hint {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .heart-scratch-viewport {
+      position: relative;
+      width: 250px;
+      height: 230px;
+      margin: 0 auto;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.75));
+    }
+
+    /* SVG clip path container */
+    .heart-clip-box {
+      position: absolute;
+      inset: 0;
+      clip-path: url(#heartPathClip);
+      -webkit-clip-path: url(#heartPathClip);
+    }
+
+    .heart-underlayer {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, #fffbf0 20%, #edd8a6 80%, #caa152 100%);
+      color: #3b0510;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      text-align: center;
+      box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .heart-underlayer .date-super {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      color: #6d0a1d;
+      margin-top: 10px;
+    }
+    .heart-underlayer .main-date {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2b030b;
+      line-height: 1.2;
+      margin: 3px 0;
+    }
+    .heart-underlayer .sub-loc {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #570a1a;
+      letter-spacing: 0.5px;
+    }
+
+    #scratch-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      touch-action: none;
+    }
+    #scratch-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* Outlined gold border for heart */
+    .heart-outline-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    /* ============================================================
+       COUNTDOWN TIMER
+       ============================================================ */
+    .countdown-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .countdown-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.95rem;
+      color: var(--gold-2);
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .timer-unit {
+      background: rgba(18, 1, 4, 0.75);
+      border: 1px solid rgba(242, 203, 108, 0.3);
+      border-radius: 12px;
+      padding: 10px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .unit-num {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gold-1);
+      line-height: 1.1;
+    }
+    .unit-lbl {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ============================================================
+       STACKED EVENT CARDS (WEDDING & RECEPTION)
+       ============================================================ */
+    .events-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .event-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--gold-2), var(--gold-4));
+    }
+
+    .event-badge {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      background: rgba(212, 175, 55, 0.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      margin-bottom: 8px;
+    }
+
+    .event-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.28rem;
+      color: var(--gold-1);
+      margin-bottom: 8px;
+    }
+
+    .event-datetime {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .nikah-highlight {
+      color: var(--gold-2);
+      font-weight: 600;
+    }
+
+    .event-venue {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background: linear-gradient(135deg, var(--gold-3) 0%, var(--gold-4) 100%);
+      color: #240108;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 25px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .map-btn:active {
+      transform: scale(0.96);
+    }
+    .map-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* ============================================================
+       CLOSING BLESSINGS & NOTES
+       ============================================================ */
+    .closing-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px 18px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tasgavkar-welcome {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.08rem;
+      color: var(--gold-2);
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .inu-note-box {
+      background: rgba(82, 7, 22, 0.45);
+      border: 1px dashed rgba(242, 203, 108, 0.4);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.35rem;
+      color: var(--gold-1);
+      line-height: 1.4;
+    }
+    .inu-sender {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold-2);
+      margin-top: 4px;
+      display: block;
+      font-weight: 600;
+    }
+
+    /* DELICATE SINGLE-LINE NO GIFTS NOTE */
+    .no-gifts-line {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.82rem;
+      color: var(--gold-2);
+      letter-spacing: 0.5px;
+      padding: 10px 14px;
+      background: rgba(30, 2, 8, 0.5);
+      border-radius: 30px;
+      border: 1px solid rgba(242, 203, 108, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Flower Blossom Petals Canvas -->
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- Hidden SVG for Heart Clip Path (100% scalable) -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <clipPath id="heartPathClip" clipPathUnits="objectBoundingBox">
+        <path d="M 0.5, 0.24 
+                 C 0.5, 0.24, 0.42, 0.04, 0.24, 0.04 
+                 C 0.09, 0.04, 0, 0.16, 0, 0.33 
+                 C 0, 0.54, 0.24, 0.74, 0.5, 0.96 
+                 C 0.76, 0.74, 1, 0.54, 1, 0.33 
+                 C 1, 0.16, 0.91, 0.04, 0.76, 0.04 
+                 C 0.58, 0.04, 0.5, 0.24, 0.5, 0.24 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- Top Floating Controls -->
+  <header class="floating-controls">
+    <button id="replayBtn" class="glass-btn" aria-label="Replay curtain reveal">
+      ✦ Replay Stage
+    </button>
+    <button id="audioToggleBtn" class="glass-btn" aria-label="Toggle music">
+      <span id="audioIcon">🔊</span>
+      <span id="audioText">Music: On</span>
+    </button>
+  </header>
+
+  <!-- ============================================================
+       GATEFOLD DOORS & WAX SEAL OVERLAY
+       ============================================================ -->
+  <div id="reveal-overlay">
+    <!-- 3D Velvet Stage Curtains -->
+    <div class="stage-curtains-container">
+      <div class="curtain-valance">
+        <div class="valance-swag"></div>
+        <div class="valance-swag"></div>
+        <div class="valance-swag"></div>
+        <div class="valance-swag"></div>
+        <div class="valance-swag"></div>
+      </div>
+      <div class="curtain-drape curtain-left"></div>
+      <div class="curtain-drape curtain-right"></div>
+    </div>
+
+    <!-- Left Gatefold Door -->
+    <div class="gate-door door-left">
+      <div class="door-pattern"></div>
+      <div class="door-initial">S</div>
+    </div>
+
+    <!-- Right Gatefold Door -->
+    <div class="gate-door door-right">
+      <div class="door-pattern"></div>
+      <div class="door-initial">M</div>
+    </div>
+
+    <!-- Center Wax Seal & Ribbons -->
+    <div class="wax-seal-wrapper" id="waxSealBtn">
+      <div class="ribbon-tail-container">
+        <div class="ribbon-left"></div>
+        <div class="ribbon-right"></div>
+      </div>
+
+      <div class="wax-seal">
+        <div class="seal-inner">
+          <svg class="seal-crown" viewBox="0 0 24 24">
+            <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+          </svg>
+          <div class="seal-monogram">S&amp;M</div>
+        </div>
+      </div>
+
+      <div class="seal-tap-badge">✦ Tap to Open ✦</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       INVITATION CONTENT
+       ============================================================ -->
+  <main class="page-wrapper">
+    <!-- Header Card -->
+    <section class="header-card">
+      <div class="bismillah-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>
+      <div class="header-sub">Cordially Invite You To Celebrate The Wedding Of</div>
+
+      <h1 class="couple-names gold-title">
+        Sahil
+        <span class="ampersand">&amp;</span>
+        Muskan
+      </h1>
+
+      <div class="lineage-container">
+        <div class="lineage-item">
+          <strong>Sahil</strong>
+          Son of Mrs. Gulshan Dilawar Tasgavkar &amp; Late Dilawar Shanur Tasgavkar
+        </div>
+        <div class="lineage-item">
+          <strong>Muskan</strong>
+          Daughter of Mrs. Shabana Khudbuddin Mujawar &amp; Mr. Khudbuddin Mohiddin Mujawar
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Heart-Shaped Scratch-to-Reveal Card -->
+    <section class="scratch-section">
+      <div class="scratch-prompt">Save Our Dates</div>
+      <div class="scratch-hint">✦ Gently rub the gold heart with your finger ✦</div>
+
+      <div class="heart-scratch-viewport">
+        <!-- Clipped Heart Container -->
+        <div class="heart-clip-box">
+          <!-- Beneath Layer (The Hidden Dates) -->
+          <div class="heart-underlayer">
+            <div class="date-super">Celebrate With Us</div>
+            <div class="main-date">NOV 22 &amp; 23</div>
+            <div class="sub-loc">2026 · Miraj &amp; Sangli</div>
+          </div>
+          <!-- Scratchable Metallic Canvas Layer -->
+          <canvas id="scratch-canvas"></canvas>
+        </div>
+
+        <!-- Gold Heart SVG Border -->
+        <svg class="heart-outline-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M 50, 24 
+                   C 50, 24, 42, 4, 24, 4 
+                   C 9, 4, 0, 16, 0, 33 
+                   C 0, 54, 24, 74, 50, 96 
+                   C 76, 74, 100, 54, 100, 33 
+                   C 100, 16, 91, 4, 76, 4 
+                   C 58, 4, 50, 24, 50, 24 Z" 
+                fill="none" 
+                stroke="rgba(242, 203, 108, 0.75)" 
+                stroke-width="2.5" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- Countdown Timer -->
+    <section class="countdown-card">
+      <div class="countdown-title">Counting Down To Forever</div>
+      <div class="timer-grid">
+        <div class="timer-unit">
+          <div class="unit-num" id="days">00</div>
+          <div class="unit-lbl">Days</div>
+        </div>
+        <div class="timer-unit">
+          <div class="unit-num" id="hours">00</div>
+          <div class="unit-lbl">Hours</div>
+        </div>
+        <div class="timer-unit">
+          <div class="unit-num" id="minutes">00</div>
+          <div class="unit-lbl">Mins</div>
+        </div>
+        <div class="timer-unit">
+          <div class="unit-num" id="seconds">00</div>
+          <div class="unit-lbl">Secs</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stacked Event Details -->
+    <div class="events-wrapper">
+      <!-- Wedding Ceremony -->
+      <article class="event-card">
+        <span class="event-badge">Day 1 · Wedding Ceremony</span>
+        <h2 class="event-title">The Nikah</h2>
+        <div class="event-datetime">
+          <span>Sunday, November 22, 2026</span>
+          <span class="nikah-highlight">Evening 06:00 PM (Nikah Time: 06:25 PM)</span>
+        </div>
+        <p class="event-venue">
+          <strong>Shahi Darbar Lawn</strong><br />
+          Takali Road, Godad Mohalla, Miraj, Maharashtra 416410
+        </p>
+        <a href="https://maps.app.goo.gl/HDj2mCYceW6t79u1A" target="_blank" rel="noopener noreferrer" class="map-btn">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+          View On Google Maps
+        </a>
+      </article>
+
+      <!-- Grand Reception -->
+      <article class="event-card">
+        <span class="event-badge">Day 2 · Celebration</span>
+        <h2 class="event-title">The Grand Reception</h2>
+        <div class="event-datetime">
+          <span>Monday, November 23, 2026</span>
+          <span class="nikah-highlight">07:00 PM Onwards</span>
+        </div>
+        <p class="event-venue">
+          <strong>Kokitkar Garden</strong><br />
+          Nishant Colony, Sangli Miraj Kupwad, Maharashtra 416415
+        </p>
+        <a href="https://maps.app.goo.gl/z67pcD4mWWqmd7ob9" target="_blank" rel="noopener noreferrer" class="map-btn">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+          View On Google Maps
+        </a>
+      </article>
+    </div>
+
+    <!-- Closing Blessings -->
+    <section class="closing-card">
+      <div class="tasgavkar-welcome">Warmly Welcome You From Tasgavkar Family</div>
+      <div class="inu-note-box">
+        "Mere chachu ki shadi mein zaroor aana!"
+        <span class="inu-sender">— With lots of love, Inu 👶✨</span>
+      </div>
+    </section>
+
+    <!-- Delicate Single Line Note -->
+    <footer class="no-gifts-line">
+      ✦ Your presence itself is the greatest gift of all · No gifts required ✦
+    </footer>
+  </main>
+
+  <script>
+    /* ============================================================
+       1. DUAL-ENGINE AUDIO PLAYER (audio.mp3 + Web Audio Synthesizer)
+       ============================================================ */
+    let audioCtx = null;
+    let synthTimer = null;
+    let isPlaying = false;
+    const bgAudio = new Audio('audio.mp3');
+    bgAudio.loop = true;
+
+    const audioToggleBtn = document.getElementById('audioToggleBtn');
+    const audioIcon = document.getElementById('audioIcon');
+    const audioText = document.getElementById('audioText');
+
+    function startMusic() {
+      if (isPlaying) return;
+      isPlaying = true;
+
+      // Try playing the MP3 file first
+      bgAudio.play().then(() => {
+        updateAudioButtonState(true);
+      }).catch(() => {
+        // Fallback to Web Audio flute synthesizer if MP3 isn't available yet
+        startSynthAudio();
+        updateAudioButtonState(true);
+      });
+    }
+
+    function stopMusic() {
+      isPlaying = false;
+      bgAudio.pause();
+      if (synthTimer) clearInterval(synthTimer);
+      if (audioCtx && audioCtx.state !== 'closed') audioCtx.suspend();
+      updateAudioButtonState(false);
+    }
+
+    function updateAudioButtonState(active) {
+      if (active) {
+        audioIcon.textContent = '🔊';
+        audioText.textContent = 'Music: On';
+      } else {
+        audioIcon.textContent = '🔇';
+        audioText.textContent = 'Music: Off';
+      }
+    }
+
+    audioToggleBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        stopMusic();
+      } else {
+        startMusic();
+      }
+    });
+
+    // Indian Classical Flute Raga Synth Fallback
+    function startSynthAudio() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const notes = [293.66, 329.63, 369.99, 440.00, 493.88, 587.33, 659.25, 739.99];
+        let step = 0;
+
+        function playFluteNote(freq, duration) {
+          if (!isPlaying || !audioCtx) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+          // Soft breath envelope
+          gain.gain.setValueAtTime(0, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.09, audioCtx.currentTime + 0.35);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start();
+          osc.stop(audioCtx.currentTime + duration);
+        }
+
+        synthTimer = setInterval(() => {
+          const melody = [587.33, 659.25, 739.99, 659.25, 587.33, 440.00, 493.88, 369.99];
+          playFluteNote(melody[step % melody.length], 1.6);
+          step++;
+        }, 850);
+      } catch (e) {
+        console.log("Audio synthesis notice:", e);
+      }
+    }
+
+    /* ============================================================
+       2. REVEAL OVERLAY (WAX SEAL & CURTAINS)
+       ============================================================ */
+    const overlay = document.getElementById('reveal-overlay');
+    const waxSealBtn = document.getElementById('waxSealBtn');
+    const replayBtn = document.getElementById('replayBtn');
+
+    function openCurtains() {
+      overlay.classList.add('open');
+      startMusic();
+
+      // Trigger celebration confetti
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 40,
+          spread: 60,
+          origin: { y: 0.5 },
+          colors: ['#f2cb6c', '#d4af37', '#e85d75', '#ffffff']
+        });
+      }
+
+      // Hide overlay after transition finishes
+      setTimeout(() => {
+        overlay.classList.add('dismissed');
+      }, 1800);
+    }
+
+    function replayReveal() {
+      overlay.classList.remove('dismissed');
+      // Force repaint
+      void overlay.offsetWidth;
+      overlay.classList.remove('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    waxSealBtn.addEventListener('click', openCurtains);
+    replayBtn.addEventListener('click', replayReveal);
+
+    /* ============================================================
+       3. FALLING FLOWER PETAL CANVAS PHYSICS
+       ============================================================ */
+    const petalCanvas = document.getElementById('petals-canvas');
+    const pCtx = petalCanvas.getContext('2d');
+    let pWidth = (petalCanvas.width = window.innerWidth);
+    let pHeight = (petalCanvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      pWidth = petalCanvas.width = window.innerWidth;
+      pHeight = petalCanvas.height = window.innerHeight;
+    });
+
+    const petals = [];
+    const petalCount = window.innerWidth < 600 ? 22 : 36;
+    const petalGradients = [
+      ['#e85d75', '#8a0d24'],
+      ['#f7c59f', '#b84a62'],
+      ['#f9e596', '#9c7322']
+    ];
+
+    for (let i = 0; i < petalCount; i++) {
+      petals.push({
+        x: Math.random() * pWidth,
+        y: Math.random() * pHeight,
+        size: Math.random() * 12 + 10,
+        speedY: Math.random() * 0.9 + 0.6,
+        speedX: Math.random() * 0.7 - 0.35,
+        rotation: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 1.5,
+        flip: Math.random() * 360,
+        flipSpeed: Math.random() * 1.8 + 0.8,
+        colors: petalGradients[Math.floor(Math.random() * petalGradients.length)]
+      });
+    }
+
+    function drawOrganicPetal(ctx, size, c1, c2) {
+      ctx.beginPath();
+      ctx.moveTo(0, -size);
+      ctx.bezierCurveTo(size * 0.8, -size * 0.7, size * 0.8, size * 0.5, 0, size);
+      ctx.bezierCurveTo(-size * 0.8, size * 0.5, -size * 0.8, -size * 0.7, 0, -size);
+      const grad = ctx.createLinearGradient(0, -size, 0, size);
+      grad.addColorStop(0, c1);
+      grad.addColorStop(1, c2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    }
+
+    function renderPetals() {
+      pCtx.clearRect(0, 0, pWidth, pHeight);
+
+      petals.forEach((p) => {
+        p.y += p.speedY;
+        p.x += Math.sin(p.y * 0.01) * 0.6 + p.speedX;
+        p.rotation += p.rotSpeed;
+        p.flip += p.flipSpeed;
+
+        if (p.y > pHeight + 20) {
+          p.y = -20;
+          p.x = Math.random() * pWidth;
+        }
+        if (p.x < -20) p.x = pWidth + 20;
+        if (p.x > pWidth + 20) p.x = -20;
+
+        pCtx.save();
+        pCtx.translate(p.x, p.y);
+        pCtx.rotate((p.rotation * Math.PI) / 180);
+        pCtx.scale(Math.cos((p.flip * Math.PI) / 180), 1);
+        drawOrganicPetal(pCtx, p.size, p.colors[0], p.colors[1]);
+        pCtx.restore();
+      });
+
+      requestAnimationFrame(renderPetals);
+    }
+    renderPetals();
+
+    /* ============================================================
+       4. HEART-SHAPED SCRATCH CANVAS
+       ============================================================ */
+    const sCanvas = document.getElementById('scratch-canvas');
+    const sCtx = sCanvas.getContext('2d');
+    let isDrawing = false;
+    let scratchedFoil = false;
+
+    function initFoil() {
+      const rect = sCanvas.getBoundingClientRect();
+      sCanvas.width = rect.width;
+      sCanvas.height = rect.height;
+
+      // Fill with golden shimmer gradient
+      const grad = sCtx.createLinearGradient(0, 0, sCanvas.width, sCanvas.height);
+      grad.addColorStop(0, '#f9e596');
+      grad.addColorStop(0.3, '#d4af37');
+      grad.addColorStop(0.6, '#aa7e1e');
+      grad.addColorStop(1, '#f9e596');
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(0, 0, sCanvas.width, sCanvas.height);
+
+      // Foil text
+      sCtx.font = 'bold 12px Montserrat, sans-serif';
+      sCtx.fillStyle = '#470a14';
+      sCtx.textAlign = 'center';
+      sCtx.fillText('✦ SCRATCH HERE ✦', sCanvas.width / 2, sCanvas.height / 2 + 5);
+    }
+
+    setTimeout(initFoil, 250);
+
+    function scratch(e) {
+      if (!isDrawing || scratchedFoil) return;
+      const rect = sCanvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      sCtx.globalCompositeOperation = 'destination-out';
+      sCtx.beginPath();
+      sCtx.arc(x, y, 20, 0, Math.PI * 2);
+      sCtx.fill();
+
+      checkScratchPercentage();
+    }
+
+    function checkScratchPercentage() {
+      if (scratchedFoil) return;
+      const imgData = sCtx.getImageData(0, 0, sCanvas.width, sCanvas.height);
+      let clearPixels = 0;
+      for (let i = 3; i < imgData.data.length; i += 32) {
+        if (imgData.data[i] === 0) clearPixels++;
+      }
+      const totalSampled = imgData.data.length / 32;
+      if (clearPixels / totalSampled > 0.38) {
+        scratchedFoil = true;
+        sCanvas.style.transition = 'opacity 0.6s ease';
+        sCanvas.style.opacity = '0';
+        setTimeout(() => {
+          sCanvas.style.display = 'none';
+        }, 600);
+
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 50,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#f2cb6c', '#fff1b8', '#ff758c']
+          });
+        }
+      }
+    }
+
+    sCanvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+    window.addEventListener('mouseup', () => { isDrawing = false; });
+    sCanvas.addEventListener('mousemove', scratch);
+
+    sCanvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, { passive: true });
+    window.addEventListener('touchend', () => { isDrawing = false; });
+    sCanvas.addEventListener('touchmove', scratch, { passive: true });
+
+    /* ============================================================
+       5. LIVE COUNTDOWN TIMER (Nov 22, 2026, 18:00:00 IST)
+       ============================================================ */
+    const targetDate = new Date('2026-11-22T18:00:00+05:30').getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.getElementById('days').innerText = '00';
+        document.getElementById('hours').innerText = '00';
+        document.getElementById('minutes').innerText = '00';
+        document.getElementById('seconds').innerText = '00';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('days').innerText = String(days).padStart(2, '0');
+      document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
