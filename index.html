@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Wedding Invitation | Sahil &amp; Muskan</title>
+  <title>Royal Wedding Invitation | Sahil &amp; Muskan</title>
 
   <!-- OpenGraph Metadata for WhatsApp / iMessage card previews -->
   <meta property="og:title" content="Royal Wedding Invitation · Sahil &amp; Muskan" />
-  <meta property="og:description" content="Nov 22 &amp; 23, 2026 · Shahi Darbar Lawn, Miraj &amp; Kokitkar Garden, Sangli. You are warmly invited!" />
+  <meta property="og:description" content="Nov 22 &amp; 23, 2026 · Shahi Darbar Lawn, Miraj &amp; Kokitkar Garden, Sangli. You are cordially invited!" />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#2b030b" />
+  <meta name="theme-color" content="#120004" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 
   <!-- Confetti Canvas Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
-      --gold-1: #fff1b8;
-      --gold-2: #f2cb6c;
+      --gold-1: #fff7d6;
+      --gold-2: #f7d274;
       --gold-3: #d4af37;
-      --gold-4: #8f6c1e;
+      --gold-4: #967018;
       --gold-5: #543e0a;
-      --crimson-dark: #1a0106;
-      --crimson-base: #33030d;
+      --crimson-dark: #120004;
+      --crimson-base: #280108;
       --crimson-mid: #520716;
       --crimson-bright: #7c0c23;
-      --card-bg: rgba(30, 2, 8, 0.78);
+      --card-bg: rgba(30, 2, 8, 0.82);
       --card-border: rgba(242, 203, 108, 0.42);
       --text-main: #fcf6e8;
       --text-dim: #d9bf9b;
@@ -47,8 +47,8 @@
     body {
       background-color: var(--crimson-dark);
       background-image: 
-        radial-gradient(circle at 50% 20%, rgba(124, 12, 35, 0.35) 0%, transparent 65%),
-        radial-gradient(circle at 50% 80%, rgba(82, 7, 22, 0.45) 0%, transparent 70%),
+        radial-gradient(circle at 50% 15%, rgba(124, 12, 35, 0.38) 0%, transparent 65%),
+        radial-gradient(circle at 50% 85%, rgba(74, 5, 19, 0.5) 0%, transparent 70%),
         repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.02) 0px, rgba(212, 175, 55, 0.02) 1px, transparent 1px, transparent 18px);
       color: var(--text-main);
       font-family: 'Montserrat', sans-serif;
@@ -64,7 +64,7 @@
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      z-index: 5;
+      z-index: 4;
     }
 
     /* ============================================================
@@ -79,7 +79,7 @@
       align-items: center;
       pointer-events: auto;
       transition: visibility 1.2s ease;
-      background: #110003;
+      background: #0f0003;
     }
 
     #reveal-overlay.dismissed {
@@ -141,7 +141,226 @@
       transform: translateX(105%) scaleX(0.96);
     }
 
-    /* WAX SEAL CONTAINER */
+    /* ============================================================
+       3D THEATER VELVET STAGE CURTAINS & LUXURY VALANCE
+       ============================================================ */
+    .stage-curtains-container {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .curtain-drape {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 52%;
+      background: repeating-linear-gradient(
+        90deg,
+        #190105 0px,
+        #3b030d 15px,
+        #6e0a1f 32px,
+        #9c112e 44px,
+        #500615 62px,
+        #1d0106 80px
+      );
+      box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.95);
+      transition: transform 1.6s cubic-bezier(0.65, 0, 0.25, 1) 0.3s;
+    }
+
+    .curtain-left { left: 0; transform-origin: left top; }
+    .curtain-right { right: 0; transform-origin: right top; }
+
+    /* Grand Pelmet & Valance */
+    .curtain-valance-grand {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 8;
+      pointer-events: none;
+      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.9));
+      transition: transform 1.5s cubic-bezier(0.7, 0, 0.2, 1) 0.2s, opacity 1.3s ease 0.4s;
+    }
+
+    /* Top Horizontal Cornice Bar */
+    .pelmet-cornice {
+      width: 100%;
+      height: 22px;
+      background: linear-gradient(180deg, 
+        #ffe89c 0%, 
+        #d4af37 25%, 
+        #96721f 55%, 
+        #553e0d 85%, 
+        #d4af37 100%
+      );
+      box-shadow: 
+        inset 0 2px 4px rgba(255, 255, 255, 0.8),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.9),
+        0 6px 14px rgba(0, 0, 0, 0.8);
+      position: relative;
+      border-bottom: 2px solid #350109;
+    }
+
+    .cornice-gold-rope {
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #ffeaa7 0px,
+        #d4af37 4px,
+        #825d14 8px,
+        #ffeaa7 12px
+      );
+      box-shadow: 0 3px 6px rgba(0,0,0,0.8);
+      z-index: 12;
+    }
+
+    /* Swags Array */
+    .pelmet-swags-row {
+      display: flex;
+      width: 100%;
+      height: 95px;
+      position: relative;
+      justify-content: space-between;
+      overflow: visible;
+    }
+
+    .velvet-swag {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      background: 
+        radial-gradient(ellipse at 50% -10%, rgba(220, 40, 75, 0.45) 0%, transparent 65%),
+        repeating-radial-gradient(ellipse at 50% 0%, 
+          #6e091e 0px, 
+          #8a0d26 12px, 
+          #43030f 24px, 
+          #9d1231 36px, 
+          #2c0108 48px
+        );
+      clip-path: ellipse(52% 96% at 50% 0%);
+      -webkit-clip-path: ellipse(52% 96% at 50% 0%);
+      box-shadow: 
+        inset 0 -12px 24px rgba(0, 0, 0, 0.9),
+        inset 0 4px 10px rgba(255, 120, 150, 0.35);
+      border-bottom: 3px solid #d4af37;
+    }
+
+    .swag-bullion-fringe {
+      position: absolute;
+      bottom: 0px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: repeating-linear-gradient(
+        90deg,
+        #ffe89c 0px,
+        #e5be58 2px,
+        #96721f 4px,
+        #493508 5px,
+        transparent 6px
+      );
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.85));
+      opacity: 0.95;
+    }
+
+    /* Cascading Side Jabots (Left & Right) */
+    .jabot-cascade {
+      position: absolute;
+      top: 0;
+      width: 48px;
+      height: 150px;
+      z-index: 10;
+      filter: drop-shadow(4px 10px 18px rgba(0,0,0,0.9));
+    }
+    .jabot-left {
+      left: 0;
+      clip-path: polygon(0 0, 100% 0, 30% 100%, 0 85%);
+      -webkit-clip-path: polygon(0 0, 100% 0, 30% 100%, 0 85%);
+      background: repeating-linear-gradient(
+        78deg,
+        #820d24 0px,
+        #aa1535 10px,
+        #3b020d 22px,
+        #1d0006 32px
+      );
+      border-right: 2px solid #d4af37;
+    }
+    .jabot-right {
+      right: 0;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 70% 100%);
+      -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 70% 100%);
+      background: repeating-linear-gradient(
+        -78deg,
+        #820d24 0px,
+        #aa1535 10px,
+        #3b020d 22px,
+        #1d0006 32px
+      );
+      border-left: 2px solid #d4af37;
+    }
+    .jabot-fringe {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: repeating-linear-gradient(
+        90deg,
+        #fff1b8 0px,
+        #d4af37 2px,
+        #795713 4px,
+        transparent 5px
+      );
+    }
+
+    /* Ornate Gold Rosettes */
+    .pelmet-rosette {
+      position: absolute;
+      top: 14px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff2b8 0%, #e6bd58 35%, #a67c1c 70%, #443105 100%);
+      box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(242, 203, 108, 0.65),
+        inset 0 1px 3px rgba(255, 255, 255, 0.9);
+      border: 1.5px solid #fff0a6;
+      transform: translateX(-50%);
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pelmet-rosette::after {
+      content: '✦';
+      font-size: 11px;
+      color: #3b020d;
+      font-weight: 900;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+
+    #reveal-overlay.open .curtain-left {
+      transform: translateX(-105%) scaleX(0.85);
+    }
+    #reveal-overlay.open .curtain-right {
+      transform: translateX(105%) scaleX(0.85);
+    }
+    #reveal-overlay.open .curtain-valance-grand {
+      transform: translateY(-115%) scaleY(0.7);
+      opacity: 0;
+    }
+
+    /* ============================================================
+       ORGANIC WAX SEAL BUTTON WITH DRIPS & MONOGRAM
+       ============================================================ */
     .wax-seal-wrapper {
       position: relative;
       z-index: 999999 !important;
@@ -161,8 +380,8 @@
 
     .wax-image-container {
       position: relative;
-      width: 175px;
-      height: 175px;
+      width: 180px;
+      height: 180px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -172,7 +391,7 @@
     }
 
     @keyframes sealFloat {
-      0%, 100% { transform: scale(1); filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9)) drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9)) drop-shadow(0 0 20px rgba(212, 175, 55, 0.25)); }
       50% { transform: scale(1.03); filter: drop-shadow(0 18px 36px rgba(0,0,0,0.95)) drop-shadow(0 0 30px rgba(212, 175, 55, 0.45)); }
     }
 
@@ -182,9 +401,10 @@
       object-fit: contain;
       display: block;
       pointer-events: none;
+      position: relative;
+      z-index: 2;
     }
 
-    /* Fallback organic seal if wax_seal.png is not loaded */
     .wax-seal-svg-fallback {
       width: 100%;
       height: 100%;
@@ -192,6 +412,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
+      z-index: 1;
     }
 
     .wax-initials-overlay {
@@ -204,7 +425,7 @@
       align-items: center;
       justify-content: center;
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
     }
 
     .seal-crown-svg {
@@ -248,69 +469,6 @@
       50% { transform: translateY(-4px); }
     }
 
-    /* 3D THEATER VELVET STAGE CURTAINS */
-    .stage-curtains-container {
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .curtain-drape {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 52%;
-      background: repeating-linear-gradient(
-        90deg,
-        #2a0209 0px,
-        #4f0614 18px,
-        #7a0c21 34px,
-        #3b040e 52px,
-        #1d0106 70px
-      );
-      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.9);
-      transition: transform 1.6s cubic-bezier(0.65, 0, 0.25, 1) 0.3s;
-    }
-
-    .curtain-left { left: 0; transform-origin: left top; }
-    .curtain-right { right: 0; transform-origin: right top; }
-
-    .curtain-valance {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: linear-gradient(180deg, #500615 0%, #290209 100%);
-      border-bottom: 3px solid var(--gold-3);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.85);
-      display: flex;
-      justify-content: space-around;
-      z-index: 6;
-      transition: opacity 1.2s ease 0.8s;
-    }
-
-    .valance-swag {
-      width: 18%;
-      height: 48px;
-      border-radius: 0 0 50% 50%;
-      background: linear-gradient(180deg, #7c0c23 0%, #30020a 100%);
-      border: 1px solid rgba(242, 203, 108, 0.4);
-      border-top: none;
-    }
-
-    #reveal-overlay.open .curtain-left {
-      transform: translateX(-105%) scaleX(0.85);
-    }
-    #reveal-overlay.open .curtain-right {
-      transform: translateX(105%) scaleX(0.85);
-    }
-    #reveal-overlay.open .curtain-valance {
-      opacity: 0;
-    }
-
     /* TOP CONTROLS */
     .floating-controls {
       position: fixed;
@@ -326,8 +484,8 @@
 
     .glass-btn {
       pointer-events: auto;
-      background: rgba(43, 3, 11, 0.75);
-      border: 1px solid rgba(242, 203, 108, 0.45);
+      background: rgba(38, 2, 8, 0.8);
+      border: 1px solid rgba(247, 210, 116, 0.45);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       padding: 7px 14px;
@@ -382,14 +540,14 @@
       content: '';
       position: absolute;
       inset: 6px;
-      border: 1px dashed rgba(242, 203, 108, 0.25);
+      border: 1px dashed rgba(247, 210, 116, 0.25);
       border-radius: 14px;
       pointer-events: none;
     }
 
     .bismillah-text {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.18rem;
       letter-spacing: 2px;
       color: var(--gold-2);
       margin-bottom: 4px;
@@ -404,8 +562,8 @@
     }
 
     .divine-blessing-box {
-      background: rgba(82, 7, 22, 0.45);
-      border: 1px solid rgba(242, 203, 108, 0.3);
+      background: rgba(74, 5, 19, 0.45);
+      border: 1px solid rgba(247, 210, 116, 0.3);
       border-radius: 12px;
       padding: 12px 14px;
       font-size: 0.8rem;
@@ -446,7 +604,7 @@
     .lineage-container {
       margin-top: 18px;
       padding-top: 16px;
-      border-top: 1px solid rgba(242, 203, 108, 0.2);
+      border-top: 1px solid rgba(247, 210, 116, 0.2);
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -588,7 +746,7 @@
 
     .timer-unit {
       background: rgba(18, 1, 4, 0.75);
-      border: 1px solid rgba(242, 203, 108, 0.3);
+      border: 1px solid rgba(247, 210, 116, 0.3);
       border-radius: 12px;
       padding: 10px 4px;
       display: flex;
@@ -705,7 +863,7 @@
       fill: currentColor;
     }
 
-    /* CLOSING CARDS */
+    /* CLOSING CARD */
     .closing-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -728,8 +886,8 @@
     }
 
     .inu-note-box {
-      background: rgba(82, 7, 22, 0.45);
-      border: 1px dashed rgba(242, 203, 108, 0.4);
+      background: rgba(74, 5, 19, 0.45);
+      border: 1px dashed rgba(247, 210, 116, 0.4);
       border-radius: 14px;
       padding: 12px 14px;
       font-family: 'Great Vibes', cursive;
@@ -754,7 +912,7 @@
   <!-- Floating Falling Petals Canvas -->
   <canvas id="petals-canvas"></canvas>
 
-  <!-- SVG Clip Path & Gold Gradient Definition -->
+  <!-- SVG Clip Path & Gold Gradient Definitions -->
   <svg width="0" height="0" style="position: absolute;">
     <defs>
       <linearGradient id="goldGradSeal" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -788,18 +946,54 @@
   </header>
 
   <!-- ============================================================
-       GATEFOLD DOORS & ACTUAL WAX SEAL IMAGE
+       GATEFOLD DOORS & WAX SEAL OVERLAY
        ============================================================ -->
   <div id="reveal-overlay">
-    <!-- 3D Velvet Stage Curtains -->
+    <!-- Hyper-Realistic 3D Theater Velvet Pelmet & Valance -->
     <div class="stage-curtains-container">
-      <div class="curtain-valance">
-        <div class="valance-swag"></div>
-        <div class="valance-swag"></div>
-        <div class="valance-swag"></div>
-        <div class="valance-swag"></div>
-        <div class="valance-swag"></div>
+      <div class="curtain-valance-grand">
+        <!-- Cornice Header Rail -->
+        <div class="pelmet-cornice">
+          <div class="cornice-gold-rope"></div>
+        </div>
+
+        <!-- Cascading Side Jabots (Left & Right) -->
+        <div class="jabot-cascade jabot-left">
+          <div class="jabot-fringe"></div>
+        </div>
+        <div class="jabot-cascade jabot-right">
+          <div class="jabot-fringe"></div>
+        </div>
+
+        <!-- Scalloped 3D Swags Row -->
+        <div class="pelmet-swags-row">
+          <div class="velvet-swag">
+            <div class="swag-bullion-fringe"></div>
+          </div>
+          <div class="velvet-swag">
+            <div class="swag-bullion-fringe"></div>
+          </div>
+          <div class="velvet-swag">
+            <div class="swag-bullion-fringe"></div>
+          </div>
+          <div class="velvet-swag">
+            <div class="swag-bullion-fringe"></div>
+          </div>
+          <div class="velvet-swag">
+            <div class="swag-bullion-fringe"></div>
+          </div>
+
+          <!-- Ornate Golden Rosette Tie Clips at Junctions -->
+          <div class="pelmet-rosette" style="left: 0%;"></div>
+          <div class="pelmet-rosette" style="left: 20%;"></div>
+          <div class="pelmet-rosette" style="left: 40%;"></div>
+          <div class="pelmet-rosette" style="left: 60%;"></div>
+          <div class="pelmet-rosette" style="left: 80%;"></div>
+          <div class="pelmet-rosette" style="left: 100%;"></div>
+        </div>
       </div>
+
+      <!-- Main Left & Right Velvet Drapes -->
       <div class="curtain-drape curtain-left"></div>
       <div class="curtain-drape curtain-right"></div>
     </div>
@@ -816,10 +1010,10 @@
       <div class="door-initial">M</div>
     </div>
 
-    <!-- Exact Wax Seal Image Button with Overlay Initials -->
+    <!-- Wax Seal Button with Overlay Initials -->
     <div class="wax-seal-wrapper" id="waxSealBtn">
       <div class="wax-image-container">
-        <!-- SVG Vector Seal Graphic (Always visible & interactive) -->
+        <!-- Organic Melted Wax Seal SVG with Drips & Gloss -->
         <svg class="wax-seal-svg-fallback" viewBox="0 0 200 200">
           <defs>
             <radialGradient id="waxGrad" cx="40%" cy="35%" r="65%">
@@ -834,21 +1028,18 @@
               <stop offset="100%" stop-color="rgba(0, 0, 0, 0.75)" />
             </radialGradient>
           </defs>
-          <!-- Organic Hand-poured Wax with Drips -->
           <path d="M98,12 C135,10 168,25 180,56 C190,80 186,112 172,138 C160,160 142,178 116,184 C95,189 74,185 58,176 C46,186 38,188 32,185 C24,181 28,168 34,158 C20,146 12,126 14,104 C16,84 28,64 44,48 C50,38 48,26 56,20 C64,14 78,22 86,16 C90,13 94,12 98,12 Z" 
                 fill="url(#waxGrad)" stroke="#520716" stroke-width="2" />
-          <!-- Liquid Wax Droplets -->
           <circle cx="28" cy="120" r="5" fill="#85061f" />
           <circle cx="34" cy="180" r="6" fill="#6a0418" />
           <circle cx="166" cy="162" r="4.5" fill="#85061f" />
           <circle cx="100" cy="190" r="4" fill="#6a0418" />
-          <!-- Outer Wax Lip Rings -->
-          <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(242, 203, 108, 0.35)" stroke-width="2.5" />
+          <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(247, 210, 116, 0.35)" stroke-width="2.5" />
           <circle cx="100" cy="100" r="66" fill="url(#rimGrad)" />
-          <circle cx="100" cy="100" r="58" fill="rgba(45, 2, 9, 0.6)" stroke="rgba(242, 203, 108, 0.5)" stroke-width="1.5" />
+          <circle cx="100" cy="100" r="58" fill="rgba(45, 2, 9, 0.6)" stroke="rgba(247, 210, 116, 0.5)" stroke-width="1.5" />
         </svg>
 
-        <!-- Optional overlay if wax_seal.png exists in folder -->
+        <!-- Optional image overlay if wax_seal.png exists in repo -->
         <img src="wax_seal.png" alt="Royal Wax Seal" class="wax-actual-img" onerror="this.style.display='none'" />
 
         <!-- Gold Initial Stamp Overlay -->
@@ -864,9 +1055,7 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       MAIN PAGE CONTENT
-       ============================================================ -->
+  <!-- MAIN PAGE CONTENT -->
   <main class="page-wrapper">
     <section class="header-card">
       <div class="bismillah-text">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>
@@ -920,7 +1109,7 @@
                    C 100, 16, 91, 4, 76, 4 
                    C 58, 4, 50, 24, 50, 24 Z" 
                 fill="none" 
-                stroke="rgba(242, 203, 108, 0.75)" 
+                stroke="rgba(247, 210, 116, 0.75)" 
                 stroke-width="2.5" />
         </svg>
       </div>
@@ -986,7 +1175,7 @@
       </article>
     </div>
 
-    <!-- CLOSING BLESSINGS -->
+    <!-- CLOSING CARD -->
     <section class="closing-card">
       <div class="families-welcome">Warmly Welcoming You From The Families of Groom &amp; Bride</div>
       <div class="inu-note-box">
@@ -1096,7 +1285,7 @@
           particleCount: 45,
           spread: 65,
           origin: { y: 0.5 },
-          colors: ['#f2cb6c', '#d4af37', '#e85d75', '#ffffff']
+          colors: ['#f7d274', '#d4af37', '#e85d75', '#ffffff']
         });
       }
 
@@ -1254,7 +1443,7 @@
             particleCount: 50,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['#f2cb6c', '#fff1b8', '#ff758c']
+            colors: ['#f7d274', '#fff1b8', '#ff758c']
           });
         }
       }
