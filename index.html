@@ -9,7 +9,7 @@
   <meta property="og:title" content="Royal Wedding Invitation · Sahil &amp; Muskan" />
   <meta property="og:description" content="Nov 22 &amp; 23, 2026 · Shahi Darbar Lawn, Miraj &amp; Kokitkar Garden, Sangli. You are cordially invited!" />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#03160e" />
+  <meta id="themeColorMeta" name="theme-color" content="#02130c" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,15 +32,21 @@
       --theme-base: #042216;
       --theme-mid: #093b26;
       --theme-bright: #125e3c;
-      --card-bg: rgba(3, 28, 18, 0.84);
+      --card-bg: rgba(3, 28, 18, 0.86);
       --card-border: rgba(242, 203, 108, 0.46);
       --text-main: #fcf6e8;
       --text-dim: #d9bf9b;
 
-      /* Theme-colored monogram & crown on gold seal */
-      --seal-accent-1: #156b44;
-      --seal-accent-2: #073822;
-      --seal-accent-3: #02180e;
+      /* Envelope Flap Textures - Emerald Velvet */
+      --flap-top-bg: linear-gradient(180deg, #052a1b 0%, #031c11 70%, #02120b 100%);
+      --flap-left-bg: linear-gradient(135deg, #031e13 0%, #062b1c 60%, #02130c 100%);
+      --flap-right-bg: linear-gradient(225deg, #031e13 0%, #062b1c 60%, #02130c 100%);
+      --flap-bottom-bg: linear-gradient(0deg, #010f08 0%, #042216 65%, #02130c 100%);
+
+      /* S & M Monogram & Crown (Theme-colored on 24K Gold Seal) */
+      --seal-symbol-1: #198051;
+      --seal-symbol-2: #09472b;
+      --seal-symbol-3: #022013;
     }
 
     /* CRIMSON THEME OVERRIDES */
@@ -49,12 +55,17 @@
       --theme-base: #280108;
       --theme-mid: #4a0614;
       --theme-bright: #7c0c23;
-      --card-bg: rgba(30, 2, 8, 0.84);
+      --card-bg: rgba(30, 2, 8, 0.86);
       --card-border: rgba(242, 203, 108, 0.42);
 
-      --seal-accent-1: #8c0f28;
-      --seal-accent-2: #4a0513;
-      --seal-accent-3: #210106;
+      --flap-top-bg: linear-gradient(180deg, #3f0410 0%, #260209 70%, #150004 100%);
+      --flap-left-bg: linear-gradient(135deg, #2b0209 0%, #430512 60%, #190105 100%);
+      --flap-right-bg: linear-gradient(225deg, #2b0209 0%, #430512 60%, #190105 100%);
+      --flap-bottom-bg: linear-gradient(0deg, #100003 0%, #2f030c 65%, #180005 100%);
+
+      --seal-symbol-1: #a11231;
+      --seal-symbol-2: #5c0718;
+      --seal-symbol-3: #2b0209;
     }
 
     * {
@@ -97,22 +108,24 @@
     }
 
     /* ============================================================
-       ENVELOPE / FOLIO COVER & RADIANT LIGHT REVEAL
+       CORNER-TO-CORNER 4-FLAP 3D ENVELOPE SCREEN
        ============================================================ */
     #envelope-screen {
       position: fixed;
       inset: 0;
       z-index: 99999;
+      perspective: 1600px;
+      perspective-origin: 50% 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #020f09;
+      background: #020c07;
       overflow: hidden;
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
     body.theme-crimson #envelope-screen {
-      background: #0d0003;
+      background: #0c0003;
     }
 
     #envelope-screen.dismissed {
@@ -121,7 +134,42 @@
       pointer-events: none;
     }
 
-    /* Radiant Sunburst Light Flare */
+    /* Header & Footer Text on Envelope Face */
+    .envelope-invitation-text {
+      position: absolute;
+      top: 6%;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 28;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.6s ease;
+    }
+
+    .invited-pre {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.75rem, 2.8vw, 0.95rem);
+      letter-spacing: 5px;
+      color: var(--gold-2);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+    }
+
+    .invited-script {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.4rem, 8vw, 3.8rem);
+      color: var(--gold-1);
+      line-height: 1.1;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.9), 0 0 16px rgba(247, 210, 116, 0.4);
+    }
+
+    #envelope-screen.opened .envelope-invitation-text {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    /* Radiant Sunburst Light Flare (Erupts from envelope center) */
     .radiant-sunburst {
       position: absolute;
       width: 140vmax;
@@ -132,15 +180,15 @@
       background: radial-gradient(
         circle,
         #ffffff 0%,
-        #fff6cc 15%,
-        #ffd15c 35%,
-        rgba(247, 190, 52, 0.85) 50%,
-        rgba(212, 140, 20, 0.5) 65%,
+        #fff7d2 15%,
+        #fce07a 32%,
+        rgba(212, 175, 55, 0.85) 48%,
+        rgba(150, 112, 24, 0.45) 65%,
         transparent 80%
       );
       opacity: 0;
       pointer-events: none;
-      z-index: 30;
+      z-index: 35;
       mix-blend-mode: screen;
       transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.7s ease;
     }
@@ -150,9 +198,9 @@
       inset: 0;
       background: repeating-conic-gradient(
         from 0deg,
-        rgba(255, 235, 150, 0.45) 0deg 8deg,
+        rgba(255, 245, 190, 0.4) 0deg 8deg,
         transparent 8deg 16deg,
-        rgba(255, 215, 90, 0.35) 16deg 26deg,
+        rgba(247, 210, 116, 0.3) 16deg 26deg,
         transparent 26deg 34deg
       );
       animation: rotateRays 22s linear infinite;
@@ -168,74 +216,84 @@
       transform: translate(-50%, -50%) scale(1.15);
     }
 
-    /* Envelope Gatefold Flaps */
-    .envelope-flap {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 50.5%;
-      background: 
-        radial-gradient(circle at center, rgba(18, 94, 60, 0.45) 0%, rgba(2, 19, 12, 0.96) 100%),
-        linear-gradient(135deg, #02120b 0%, #083321 45%, #010c07 100%);
-      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.92);
-      transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.15s, background 0.4s ease;
-      z-index: 20;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    body.theme-crimson .envelope-flap {
-      background: 
-        radial-gradient(circle at center, rgba(124, 12, 35, 0.45) 0%, rgba(20, 1, 4, 0.95) 100%),
-        linear-gradient(135deg, #1d0106 0%, #3e040f 45%, #180004 100%);
-    }
-
-    .flap-left {
-      left: 0;
-      border-right: 2px solid rgba(247, 210, 116, 0.85);
-      transform-origin: left center;
-    }
-
-    .flap-right {
-      right: 0;
-      border-left: 2px solid rgba(247, 210, 116, 0.85);
-      transform-origin: right center;
-    }
-
-    .flap-inner-border {
-      position: absolute;
-      inset: 14px;
-      border: 1px solid rgba(247, 210, 116, 0.35);
-      pointer-events: none;
-    }
-    .flap-left .flap-inner-border { border-right: none; }
-    .flap-right .flap-inner-border { border-left: none; }
-
-    /* Botanical Ornamental Gold Filigree */
-    .flap-botanical-svg {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 170px;
-      height: 380px;
-      pointer-events: none;
-      filter: drop-shadow(0 0 10px rgba(247, 210, 116, 0.4));
-      opacity: 0.92;
-    }
-    .flap-left .flap-botanical-svg { right: 0; }
-    .flap-right .flap-botanical-svg { left: 0; transform: translateY(-50%) scaleX(-1); }
-
-    .flap-crease-overlay {
+    /* Envelope Flap Base Style - Full Screen 4 Triangular Sections Meeting at (50%, 50%) */
+    .env-flap {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 50%, rgba(0,0,0,0.5));
+      pointer-events: none;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
+    /* TOP TRIANGULAR FLAP (Flips Upward from the top edge: [0,0] to [100%, 0] to [50%, 50%]) */
+    .flap-top {
+      background: var(--flap-top-bg);
+      clip-path: polygon(0% 0%, 100% 0%, 50% 50%);
+      -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 50%);
+      transform-origin: 50% 0%;
+      z-index: 25;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1), background 0.4s ease;
+    }
+
+    /* LEFT FLAP (Folds from left edge: [0,0] to [50%, 50%] to [0, 100%]) */
+    .flap-left {
+      background: var(--flap-left-bg);
+      clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+      -webkit-clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+      transform-origin: 0% 50%;
+      z-index: 22;
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.15s, background 0.4s ease;
+    }
+
+    /* RIGHT FLAP (Folds from right edge: [100%, 0] to [100%, 100%] to [50%, 50%]) */
+    .flap-right {
+      background: var(--flap-right-bg);
+      clip-path: polygon(100% 0%, 100% 100%, 50% 50%);
+      -webkit-clip-path: polygon(100% 0%, 100% 100%, 50% 50%);
+      transform-origin: 100% 50%;
+      z-index: 22;
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.15s, background 0.4s ease;
+    }
+
+    /* BOTTOM FLAP (Folds from bottom edge: [0, 100%] to [100%, 100%] to [50%, 50%]) */
+    .flap-bottom {
+      background: var(--flap-bottom-bg);
+      clip-path: polygon(0% 100%, 100% 100%, 50% 50%);
+      -webkit-clip-path: polygon(0% 100%, 100% 100%, 50% 50%);
+      transform-origin: 50% 100%;
+      z-index: 20;
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.2s, background 0.4s ease;
+    }
+
+    /* REALISTIC 3D UNFOLDING TRANSFORMATIONS */
+    #envelope-screen.opened .flap-top {
+      transform: rotateX(175deg);
+    }
     #envelope-screen.opened .flap-left {
-      transform: translateX(-108%);
+      transform: rotateY(-90deg) scale(0.95);
     }
     #envelope-screen.opened .flap-right {
-      transform: translateX(108%);
+      transform: rotateY(90deg) scale(0.95);
+    }
+    #envelope-screen.opened .flap-bottom {
+      transform: rotateX(-90deg) scale(0.95);
+    }
+
+    /* FULL VIEWPORT CORNER-TO-CORNER DIAGONAL SEAM LINES & EMBROIDERY */
+    .envelope-creases-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 26;
+      transition: opacity 0.5s ease;
+    }
+
+    #envelope-screen.opened .envelope-creases-svg {
+      opacity: 0;
     }
 
     /* Central Gold Wax Seal Button */
@@ -252,7 +310,7 @@
 
     #envelope-screen.opened .wax-seal-wrapper {
       opacity: 0;
-      transform: scale(0.65) translateY(-20px);
+      transform: scale(0.55) translateY(-30px);
       pointer-events: none !important;
     }
 
@@ -278,7 +336,7 @@
       }
     }
 
-    /* Realistic 24K Gold Wax Seal SVG Graphic */
+    /* 24K Liquid Gold Metallic Wax SVG Graphic with Drips */
     .wax-seal-svg-fallback {
       width: 100%;
       height: 100%;
@@ -324,7 +382,7 @@
       font-size: 1.7rem;
       font-weight: 900;
       letter-spacing: 2.5px;
-      background: linear-gradient(135deg, var(--seal-accent-1) 0%, var(--seal-accent-2) 60%, var(--seal-accent-3) 100%);
+      background: linear-gradient(135deg, var(--seal-symbol-1) 0%, var(--seal-symbol-2) 60%, var(--seal-symbol-3) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 1px 1px rgba(255, 235, 170, 0.6)) drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.9));
@@ -826,19 +884,19 @@
   <!-- SVG Global Definitions -->
   <svg width="0" height="0" style="position: absolute;">
     <defs>
-      <!-- Gold Gradient for Filigree & Trim -->
-      <linearGradient id="goldGradSeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <!-- Gold Gradient for Seams & Borders -->
+      <linearGradient id="goldGradSeams" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#fff7d6" />
-        <stop offset="40%" stop-color="#f7d274" />
+        <stop offset="35%" stop-color="#f7d274" />
         <stop offset="70%" stop-color="#d4af37" />
         <stop offset="100%" stop-color="#876214" />
       </linearGradient>
 
       <!-- Theme-Colored Gradient for Crown SVG -->
       <linearGradient id="themeSymbolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="var(--seal-accent-1)" />
-        <stop offset="60%" stop-color="var(--seal-accent-2)" />
-        <stop offset="100%" stop-color="var(--seal-accent-3)" />
+        <stop offset="0%" stop-color="var(--seal-symbol-1)" />
+        <stop offset="60%" stop-color="var(--seal-symbol-2)" />
+        <stop offset="100%" stop-color="var(--seal-symbol-3)" />
       </linearGradient>
 
       <!-- 24K Liquid Gold Metallic Wax Gradient -->
@@ -856,13 +914,6 @@
         <stop offset="100%" stop-color="rgba(0, 0, 0, 0.65)" />
       </radialGradient>
 
-      <linearGradient id="goldFiligreeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#fff0aa" />
-        <stop offset="35%" stop-color="#f2c864" />
-        <stop offset="75%" stop-color="#c69a2d" />
-        <stop offset="100%" stop-color="#7a5509" />
-      </linearGradient>
-
       <clipPath id="heartPathClip" clipPathUnits="objectBoundingBox">
         <path d="M 0.5, 0.24 
                  C 0.5, 0.24, 0.42, 0.04, 0.24, 0.04 
@@ -877,7 +928,7 @@
 
   <!-- Top Floating Controls -->
   <header class="floating-controls">
-    <button id="replayBtn" class="glass-btn" aria-label="Replay curtain reveal">
+    <button id="replayBtn" class="glass-btn" aria-label="Replay envelope unfold">
       ✦ Replay
     </button>
     <button id="themeToggleBtn" class="glass-btn" aria-label="Toggle Royal Theme">
@@ -891,80 +942,71 @@
   </header>
 
   <!-- ============================================================
-       VIDEO-MATCHED ENVELOPE / FOLIO COVER & RADIANT LIGHT REVEAL
+       CORNER-TO-CORNER 4-FLAP 3D ENVELOPE REVEAL SCREEN
        ============================================================ -->
   <div id="envelope-screen">
-    <!-- Radiant Golden Sunburst Light Eruption -->
+    <!-- Radiant Golden Sunburst Light Flare Eruption -->
     <div class="radiant-sunburst">
       <div class="radiant-rays"></div>
     </div>
 
-    <!-- Left Flap with Botanical Gold Lace Embroidery -->
-    <div class="envelope-flap flap-left">
-      <div class="flap-crease-overlay"></div>
-      <div class="flap-inner-border"></div>
-
-      <!-- Symmetrical Botanical Floral Vines (matching video) -->
-      <svg class="flap-botanical-svg" viewBox="0 0 170 380" fill="none">
-        <path d="M165,10 C130,50 110,110 110,190 C110,270 130,330 165,370" stroke="url(#goldFiligreeGrad)" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M165,60 C140,85 130,130 130,190 C130,250 140,295 165,320" stroke="url(#goldFiligreeGrad)" stroke-width="1.5" stroke-dasharray="3,3"/>
-        
-        <!-- Intricate Floral Leaves & Buds -->
-        <path d="M110,130 C85,115 75,90 85,75 C95,95 110,115 110,130 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        <path d="M110,170 C70,165 50,145 55,130 C75,145 95,160 110,170 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        <path d="M110,210 C70,215 50,235 55,250 C75,235 95,220 110,210 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        <path d="M110,250 C85,265 75,290 85,305 C95,285 110,265 110,250 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        
-        <!-- Curved Spirals -->
-        <path d="M110,190 C90,190 70,180 65,160 C60,140 75,130 85,140 C92,148 85,160 78,160" stroke="url(#goldFiligreeGrad)" stroke-width="1.8" fill="none"/>
-        <path d="M110,190 C90,190 70,200 65,220 C60,240 75,250 85,240 C92,232 85,220 78,220" stroke="url(#goldFiligreeGrad)" stroke-width="1.8" fill="none"/>
-        
-        <!-- Corner Flourishes -->
-        <circle cx="160" cy="20" r="3.5" fill="url(#goldFiligreeGrad)" />
-        <circle cx="160" cy="360" r="3.5" fill="url(#goldFiligreeGrad)" />
-        <circle cx="85" cy="75" r="2.5" fill="#fff" />
-        <circle cx="85" cy="305" r="2.5" fill="#fff" />
-      </svg>
+    <!-- Header Text (Matching reference image: 'YOU ARE INVITED') -->
+    <div class="envelope-invitation-text">
+      <div class="invited-pre">You Are</div>
+      <div class="invited-script">Invited</div>
     </div>
 
-    <!-- Right Flap with Mirrored Botanical Gold Lace Embroidery -->
-    <div class="envelope-flap flap-right">
-      <div class="flap-crease-overlay"></div>
-      <div class="flap-inner-border"></div>
+    <!-- 4 Geometric Flaps (Meeting at exactly 50% 50% center) -->
+    <div class="env-flap flap-bottom"></div>
+    <div class="env-flap flap-left"></div>
+    <div class="env-flap flap-right"></div>
+    <div class="env-flap flap-top"></div>
 
-      <!-- Mirrored Symmetrical Vines -->
-      <svg class="flap-botanical-svg" viewBox="0 0 170 380" fill="none">
-        <path d="M165,10 C130,50 110,110 110,190 C110,270 130,330 165,370" stroke="url(#goldFiligreeGrad)" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M165,60 C140,85 130,130 130,190 C130,250 140,295 165,320" stroke="url(#goldFiligreeGrad)" stroke-width="1.5" stroke-dasharray="3,3"/>
-        
-        <path d="M110,130 C85,115 75,90 85,75 C95,95 110,115 110,130 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        <path d="M110,170 C70,165 50,145 55,130 C75,145 95,160 110,170 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        <path d="M110,210 C70,215 50,235 55,250 C75,235 95,220 110,210 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        <path d="M110,250 C85,265 75,290 85,305 C95,285 110,265 110,250 Z" fill="url(#goldFiligreeGrad)" opacity="0.85"/>
-        
-        <path d="M110,190 C90,190 70,180 65,160 C60,140 75,130 85,140 C92,148 85,160 78,160" stroke="url(#goldFiligreeGrad)" stroke-width="1.8" fill="none"/>
-        <path d="M110,190 C90,190 70,200 65,220 C60,240 75,250 85,240 C92,232 85,220 78,220" stroke="url(#goldFiligreeGrad)" stroke-width="1.8" fill="none"/>
-        
-        <circle cx="160" cy="20" r="3.5" fill="url(#goldFiligreeGrad)" />
-        <circle cx="160" cy="360" r="3.5" fill="url(#goldFiligreeGrad)" />
-        <circle cx="85" cy="75" r="2.5" fill="#fff" />
-        <circle cx="85" cy="305" r="2.5" fill="#fff" />
-      </svg>
-    </div>
+    <!-- 4 Diagonal Seam Creases Mapping Corners to Viewport Center with Botanical Lace -->
+    <svg class="envelope-creases-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+      <!-- 4 Diagonal Metallic Seam Lines: [0,0] -> [500,500], [1000,0] -> [500,500], etc. -->
+      <line x1="0" y1="0" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
+      <line x1="1000" y1="0" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
+      <line x1="0" y1="1000" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
+      <line x1="1000" y1="1000" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
 
-    <!-- Center Gold Wax Seal Button -->
+      <!-- Metallic Gold Lace & Botanical Embroidery Along The Top Triangular Flap Seams -->
+      <!-- Top-Left Seam Embroidery -->
+      <path d="M50,50 C120,95 240,210 500,500" stroke="url(#goldGradSeams)" stroke-width="1.8" stroke-dasharray="4,5" fill="none" opacity="0.8" />
+      <path d="M120,120 Q160,110 180,140 Q150,170 120,120 Z" fill="url(#goldGradSeams)" opacity="0.65" />
+      <path d="M220,220 Q270,195 295,230 Q255,270 220,220 Z" fill="url(#goldGradSeams)" opacity="0.65" />
+      <path d="M340,340 Q395,305 420,345 Q375,390 340,340 Z" fill="url(#goldGradSeams)" opacity="0.65" />
+
+      <!-- Top-Right Seam Embroidery -->
+      <path d="M950,50 C880,95 760,210 500,500" stroke="url(#goldGradSeams)" stroke-width="1.8" stroke-dasharray="4,5" fill="none" opacity="0.8" />
+      <path d="M880,120 Q840,110 820,140 Q850,170 880,120 Z" fill="url(#goldGradSeams)" opacity="0.65" />
+      <path d="M780,220 Q730,195 705,230 Q745,270 780,220 Z" fill="url(#goldGradSeams)" opacity="0.65" />
+      <path d="M660,340 Q605,305 580,345 Q625,390 660,340 Z" fill="url(#goldGradSeams)" opacity="0.65" />
+
+      <!-- Bottom Flap Lace & Embroidery Accents -->
+      <path d="M160,840 Q220,780 280,820" stroke="url(#goldGradSeams)" stroke-width="1.5" stroke-dasharray="3,3" fill="none" opacity="0.6" />
+      <path d="M840,840 Q780,780 720,820" stroke="url(#goldGradSeams)" stroke-width="1.5" stroke-dasharray="3,3" fill="none" opacity="0.6" />
+
+      <!-- Delicate Corner Flower Blossom Vignette (Matching Reference) -->
+      <g transform="translate(40, 840) scale(0.65)" opacity="0.85">
+        <circle cx="100" cy="100" r="30" fill="url(#goldGradSeams)" opacity="0.4"/>
+        <path d="M100,60 C120,80 120,120 100,140 C80,120 80,80 100,60 Z" fill="url(#goldGradSeams)"/>
+        <path d="M60,100 C80,120 120,120 140,100 C120,80 80,80 60,100 Z" fill="url(#goldGradSeams)"/>
+        <circle cx="100" cy="100" r="14" fill="#fff" opacity="0.9"/>
+      </g>
+    </svg>
+
+    <!-- Center 24K Gold Wax Seal Button -->
     <div class="wax-seal-wrapper" id="waxSealBtn">
       <div class="wax-image-container">
         <!-- 24K Liquid Gold Metallic Wax SVG Drawing with Drips -->
         <svg class="wax-seal-svg-fallback" viewBox="0 0 200 200">
           <path d="M98,12 C135,10 168,25 180,56 C190,80 186,112 172,138 C160,160 142,178 116,184 C95,189 74,185 58,176 C46,186 38,188 32,185 C24,181 28,168 34,158 C20,146 12,126 14,104 C16,84 28,64 44,48 C50,38 48,26 56,20 C64,14 78,22 86,16 C90,13 94,12 98,12 Z" 
                 fill="url(#waxGoldGrad)" stroke="#a17a1e" stroke-width="2" />
-          <!-- Gold Liquid Wax Droplets -->
           <circle cx="28" cy="120" r="5" fill="#c49a2e" />
           <circle cx="34" cy="180" r="6" fill="#a17a1e" />
           <circle cx="166" cy="162" r="4.5" fill="#c49a2e" />
           <circle cx="100" cy="190" r="4" fill="#8c6414" />
-          <!-- Concentric Inner Lip Rings -->
           <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255, 248, 200, 0.45)" stroke-width="2.5" />
           <circle cx="100" cy="100" r="66" fill="url(#rimGoldGrad)" />
           <circle cx="100" cy="100" r="58" fill="rgba(196, 154, 46, 0.35)" stroke="rgba(255, 248, 200, 0.6)" stroke-width="1.5" />
@@ -1152,10 +1194,10 @@
     function updateAudioButtonState(active) {
       if (active) {
         audioIcon.textContent = '🔊';
-        audioText.textContent = 'Music: On';
+        audioText.textContent = 'Music';
       } else {
         audioIcon.textContent = '🔇';
-        audioText.textContent = 'Music: Off';
+        audioText.textContent = 'Muted';
       }
     }
 
@@ -1235,7 +1277,7 @@
     }
 
     // ============================================================
-    // VIDEO-MATCHED ENVELOPE OPENING ANIMATION SEQUENCE
+    // CORNER-TO-CORNER 3D ENVELOPE OPENING ANIMATION SEQUENCE
     // ============================================================
     const envScreen = document.getElementById('envelope-screen');
     const waxSealBtn = document.getElementById('waxSealBtn');
@@ -1256,8 +1298,8 @@
         if (typeof confetti === 'function') {
           const isCrimson = document.body.classList.contains('theme-crimson');
           confetti({
-            particleCount: 50,
-            spread: 75,
+            particleCount: 55,
+            spread: 80,
             origin: { y: 0.5 },
             colors: isCrimson
               ? ['#f7d274', '#d4af37', '#e85d75', '#ffffff']
@@ -1268,7 +1310,7 @@
 
       setTimeout(() => {
         envScreen.classList.add('dismissed');
-      }, 1450);
+      }, 1500);
     }
 
     function replayReveal() {
@@ -1419,11 +1461,14 @@
         }, 600);
 
         if (typeof confetti === 'function') {
+          const isCrimson = document.body.classList.contains('theme-crimson');
           confetti({
             particleCount: 50,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['#f7d274', '#fff1b8', '#ff758c']
+            colors: isCrimson
+              ? ['#f7d274', '#fff1b8', '#ff758c']
+              : ['#f7d274', '#fff1b8', '#52b788']
           });
         }
       }
