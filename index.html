@@ -32,16 +32,16 @@
       --theme-base: #042216;
       --theme-mid: #093b26;
       --theme-bright: #125e3c;
-      --card-bg: rgba(3, 28, 18, 0.86);
+      --card-bg: rgba(3, 28, 18, 0.88);
       --card-border: rgba(242, 203, 108, 0.46);
       --text-main: #fcf6e8;
       --text-dim: #d9bf9b;
 
-      /* Envelope Flap Textures - Emerald Velvet */
-      --flap-top-bg: linear-gradient(180deg, #052a1b 0%, #031c11 70%, #02120b 100%);
-      --flap-left-bg: linear-gradient(135deg, #031e13 0%, #062b1c 60%, #02130c 100%);
-      --flap-right-bg: linear-gradient(225deg, #031e13 0%, #062b1c 60%, #02130c 100%);
-      --flap-bottom-bg: linear-gradient(0deg, #010f08 0%, #042216 65%, #02130c 100%);
+      /* REALISTIC LUXURY BEIGE & IVORY ENVELOPE PALETTE */
+      --beige-paper-top: linear-gradient(180deg, #fdfbf7 0%, #f6eee0 55%, #ecdcc8 100%);
+      --beige-paper-left: linear-gradient(135deg, #f9f4ea 0%, #efe2cf 60%, #e0ceb5 100%);
+      --beige-paper-right: linear-gradient(225deg, #f9f4ea 0%, #efe2cf 60%, #e0ceb5 100%);
+      --beige-paper-bottom: linear-gradient(0deg, #f3e8d7 0%, #ebdcc7 65%, #dec9ad 100%);
 
       /* S & M Monogram & Crown (Theme-colored on 24K Gold Seal) */
       --seal-symbol-1: #198051;
@@ -55,13 +55,8 @@
       --theme-base: #280108;
       --theme-mid: #4a0614;
       --theme-bright: #7c0c23;
-      --card-bg: rgba(30, 2, 8, 0.86);
+      --card-bg: rgba(30, 2, 8, 0.88);
       --card-border: rgba(242, 203, 108, 0.42);
-
-      --flap-top-bg: linear-gradient(180deg, #3f0410 0%, #260209 70%, #150004 100%);
-      --flap-left-bg: linear-gradient(135deg, #2b0209 0%, #430512 60%, #190105 100%);
-      --flap-right-bg: linear-gradient(225deg, #2b0209 0%, #430512 60%, #190105 100%);
-      --flap-bottom-bg: linear-gradient(0deg, #100003 0%, #2f030c 65%, #180005 100%);
 
       --seal-symbol-1: #a11231;
       --seal-symbol-2: #5c0718;
@@ -108,7 +103,7 @@
     }
 
     /* ============================================================
-       CORNER-TO-CORNER 4-FLAP 3D ENVELOPE SCREEN
+       CORNER-TO-CORNER 4-FLAP 3D BEIGE ENVELOPE SCREEN
        ============================================================ */
     #envelope-screen {
       position: fixed;
@@ -119,13 +114,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #020c07;
+      background: #e5d8c5;
       overflow: hidden;
       transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-
-    body.theme-crimson #envelope-screen {
-      background: #0c0003;
     }
 
     #envelope-screen.dismissed {
@@ -134,7 +125,7 @@
       pointer-events: none;
     }
 
-    /* Header & Footer Text on Envelope Face */
+    /* Header Text on Envelope Face */
     .envelope-invitation-text {
       position: absolute;
       top: 6%;
@@ -150,18 +141,18 @@
       font-family: 'Cinzel Decorative', serif;
       font-size: clamp(0.75rem, 2.8vw, 0.95rem);
       letter-spacing: 5px;
-      color: var(--gold-2);
+      color: #946e1e;
       text-transform: uppercase;
       margin-bottom: 2px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+      text-shadow: 0 1px 2px rgba(255,255,255,0.8);
     }
 
     .invited-script {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(2.4rem, 8vw, 3.8rem);
-      color: var(--gold-1);
+      color: #5a3c05;
       line-height: 1.1;
-      text-shadow: 0 4px 14px rgba(0,0,0,0.9), 0 0 16px rgba(247, 210, 116, 0.4);
+      text-shadow: 0 2px 4px rgba(255,255,255,0.7), 0 0 10px rgba(212, 175, 55, 0.3);
     }
 
     #envelope-screen.opened .envelope-invitation-text {
@@ -169,7 +160,7 @@
       transform: translateY(-20px);
     }
 
-    /* Radiant Sunburst Light Flare (Erupts from envelope center) */
+    /* Radiant Sunburst Flare Eruption */
     .radiant-sunburst {
       position: absolute;
       width: 140vmax;
@@ -216,7 +207,7 @@
       transform: translate(-50%, -50%) scale(1.15);
     }
 
-    /* Envelope Flap Base Style - Full Screen 4 Triangular Sections Meeting at (50%, 50%) */
+    /* 4 Geometric Flaps (Meeting at exactly 50% 50% center) */
     .env-flap {
       position: absolute;
       inset: 0;
@@ -226,48 +217,50 @@
       -webkit-backface-visibility: hidden;
     }
 
-    /* TOP TRIANGULAR FLAP (Flips Upward from the top edge: [0,0] to [100%, 0] to [50%, 50%]) */
+    /* TOP FLAP */
     .flap-top {
-      background: var(--flap-top-bg);
+      background: var(--beige-paper-top);
       clip-path: polygon(0% 0%, 100% 0%, 50% 50%);
       -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 50%);
       transform-origin: 50% 0%;
       z-index: 25;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
-      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1), background 0.4s ease;
+      filter: drop-shadow(0 10px 18px rgba(78, 55, 23, 0.35));
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1);
     }
 
-    /* LEFT FLAP (Folds from left edge: [0,0] to [50%, 50%] to [0, 100%]) */
+    /* LEFT FLAP */
     .flap-left {
-      background: var(--flap-left-bg);
+      background: var(--beige-paper-left);
       clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
       -webkit-clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
       transform-origin: 0% 50%;
       z-index: 22;
-      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.15s, background 0.4s ease;
+      filter: drop-shadow(6px 0 14px rgba(78, 55, 23, 0.2));
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.15s;
     }
 
-    /* RIGHT FLAP (Folds from right edge: [100%, 0] to [100%, 100%] to [50%, 50%]) */
+    /* RIGHT FLAP */
     .flap-right {
-      background: var(--flap-right-bg);
+      background: var(--beige-paper-right);
       clip-path: polygon(100% 0%, 100% 100%, 50% 50%);
       -webkit-clip-path: polygon(100% 0%, 100% 100%, 50% 50%);
       transform-origin: 100% 50%;
       z-index: 22;
-      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.15s, background 0.4s ease;
+      filter: drop-shadow(-6px 0 14px rgba(78, 55, 23, 0.2));
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.15s;
     }
 
-    /* BOTTOM FLAP (Folds from bottom edge: [0, 100%] to [100%, 100%] to [50%, 50%]) */
+    /* BOTTOM FLAP */
     .flap-bottom {
-      background: var(--flap-bottom-bg);
+      background: var(--beige-paper-bottom);
       clip-path: polygon(0% 100%, 100% 100%, 50% 50%);
       -webkit-clip-path: polygon(0% 100%, 100% 100%, 50% 50%);
       transform-origin: 50% 100%;
       z-index: 20;
-      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.2s, background 0.4s ease;
+      transition: transform 1.4s cubic-bezier(0.65, 0, 0.25, 1) 0.2s;
     }
 
-    /* REALISTIC 3D UNFOLDING TRANSFORMATIONS */
+    /* 3D UNFOLDING */
     #envelope-screen.opened .flap-top {
       transform: rotateX(175deg);
     }
@@ -281,7 +274,7 @@
       transform: rotateX(-90deg) scale(0.95);
     }
 
-    /* FULL VIEWPORT CORNER-TO-CORNER DIAGONAL SEAM LINES & EMBROIDERY */
+    /* DIAGONAL SEAM CREASES & EMBROIDERY */
     .envelope-creases-svg {
       position: absolute;
       inset: 0;
@@ -296,7 +289,7 @@
       opacity: 0;
     }
 
-    /* Central Gold Wax Seal Button */
+    /* 24K GOLD WAX SEAL */
     .wax-seal-wrapper {
       position: relative;
       z-index: 40;
@@ -321,22 +314,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 25px rgba(247, 210, 116, 0.35));
+      filter: drop-shadow(0 16px 28px rgba(90, 60, 10, 0.55)) drop-shadow(0 0 20px rgba(247, 210, 116, 0.5));
       animation: sealPulse 2.8s ease-in-out infinite;
     }
 
     @keyframes sealPulse {
       0%, 100% {
         transform: scale(1);
-        filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 25px rgba(247, 210, 116, 0.35));
+        filter: drop-shadow(0 16px 28px rgba(90, 60, 10, 0.55)) drop-shadow(0 0 20px rgba(247, 210, 116, 0.5));
       }
       50% {
         transform: scale(1.04);
-        filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 38px rgba(247, 210, 116, 0.6));
+        filter: drop-shadow(0 20px 36px rgba(90, 60, 10, 0.65)) drop-shadow(0 0 32px rgba(247, 210, 116, 0.75));
       }
     }
 
-    /* 24K Liquid Gold Metallic Wax SVG Graphic with Drips */
     .wax-seal-svg-fallback {
       width: 100%;
       height: 100%;
@@ -354,7 +346,7 @@
       pointer-events: none;
     }
 
-    /* THEME-MATCHED S & M SYMBOL & CROWN */
+    /* S & M SYMBOL ON SEAL */
     .wax-initials-overlay {
       position: absolute;
       top: 50%;
@@ -372,7 +364,7 @@
       width: 28px;
       height: 22px;
       fill: url(#themeSymbolGrad);
-      filter: drop-shadow(0 1px 1px rgba(255, 235, 170, 0.6)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+      filter: drop-shadow(0 1px 1px rgba(255, 235, 170, 0.8)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
       margin-bottom: 2px;
       transition: fill 0.3s ease;
     }
@@ -385,7 +377,7 @@
       background: linear-gradient(135deg, var(--seal-symbol-1) 0%, var(--seal-symbol-2) 60%, var(--seal-symbol-3) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 1px 1px rgba(255, 235, 170, 0.6)) drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.9));
+      filter: drop-shadow(0 1px 1px rgba(255, 235, 170, 0.8)) drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.7));
       transition: background 0.3s ease;
     }
 
@@ -400,7 +392,7 @@
       font-size: 0.72rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 16px rgba(247, 210, 116, 0.55);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4), 0 0 16px rgba(247, 210, 116, 0.55);
       animation: badgeBounce 1.8s ease-in-out infinite;
       z-index: 5;
     }
@@ -825,54 +817,104 @@
       fill: currentColor;
     }
 
-    /* CLOSING CARD */
+    /* CLOSING CARD WITH COMPACT TODDLER SCRIBBLE */
     .closing-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 18px;
-      padding: 24px 18px;
+      padding: 22px 16px 20px;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      align-items: center;
+      gap: 12px;
       transition: background 0.4s ease;
     }
 
     .families-welcome {
       font-family: 'Cinzel Decorative', serif;
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       color: var(--gold-2);
       letter-spacing: 1px;
       font-weight: 700;
       line-height: 1.4;
     }
 
-    .inu-note-box {
-      background: rgba(9, 59, 38, 0.5);
-      border: 1px dashed rgba(247, 210, 116, 0.4);
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.35rem;
-      color: var(--gold-1);
-      line-height: 1.4;
-      transition: background 0.4s ease;
+    /* Compact 5-Month-Old Scribble Paper */
+    .toddler-note-compact {
+      position: relative;
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
     }
 
-    body.theme-crimson .inu-note-box {
-      background: rgba(74, 5, 19, 0.45);
+    .tape-accent {
+      position: absolute;
+      top: -8px;
+      width: 72px;
+      height: 18px;
+      background: rgba(247, 210, 116, 0.7);
+      transform: rotate(-2deg);
+      border: 1px dashed rgba(150, 112, 24, 0.45);
+      z-index: 6;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.35);
     }
 
-    .inu-sender {
+    .paper-frame {
+      background: #fbfbfb;
+      padding: 4px;
+      border-radius: 4px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.4);
+      transform: rotate(-1deg);
+      max-width: 225px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .toddler-scribble-img {
+      width: 100%;
+      height: auto;
+      max-height: 155px;
+      object-fit: cover;
+      display: block;
+      border-radius: 3px;
+    }
+
+    .scribble-callout {
+      margin-top: 10px;
+      text-align: center;
+      max-width: 320px;
+    }
+
+    .detect-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold-2);
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    .trans-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.94rem;
+      font-style: italic;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin: 2px 0 4px;
+    }
+
+    .inu-byline {
       font-family: 'Montserrat', sans-serif;
       font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--gold-2);
-      margin-top: 4px;
-      display: block;
       font-weight: 600;
+      color: var(--gold-3);
+      letter-spacing: 0.8px;
     }
   </style>
 </head>
@@ -942,7 +984,7 @@
   </header>
 
   <!-- ============================================================
-       CORNER-TO-CORNER 4-FLAP 3D ENVELOPE REVEAL SCREEN
+       CORNER-TO-CORNER 4-FLAP 3D BEIGE ENVELOPE SCREEN
        ============================================================ -->
   <div id="envelope-screen">
     <!-- Radiant Golden Sunburst Light Flare Eruption -->
@@ -964,13 +1006,12 @@
 
     <!-- 4 Diagonal Seam Creases Mapping Corners to Viewport Center with Botanical Lace -->
     <svg class="envelope-creases-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-      <!-- 4 Diagonal Metallic Seam Lines: [0,0] -> [500,500], [1000,0] -> [500,500], etc. -->
+      <!-- 4 Diagonal Metallic Seam Lines -->
       <line x1="0" y1="0" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
       <line x1="1000" y1="0" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
       <line x1="0" y1="1000" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
       <line x1="1000" y1="1000" x2="500" y2="500" stroke="url(#goldGradSeams)" stroke-width="2.5" />
 
-      <!-- Metallic Gold Lace & Botanical Embroidery Along The Top Triangular Flap Seams -->
       <!-- Top-Left Seam Embroidery -->
       <path d="M50,50 C120,95 240,210 500,500" stroke="url(#goldGradSeams)" stroke-width="1.8" stroke-dasharray="4,5" fill="none" opacity="0.8" />
       <path d="M120,120 Q160,110 180,140 Q150,170 120,120 Z" fill="url(#goldGradSeams)" opacity="0.65" />
@@ -987,7 +1028,7 @@
       <path d="M160,840 Q220,780 280,820" stroke="url(#goldGradSeams)" stroke-width="1.5" stroke-dasharray="3,3" fill="none" opacity="0.6" />
       <path d="M840,840 Q780,780 720,820" stroke="url(#goldGradSeams)" stroke-width="1.5" stroke-dasharray="3,3" fill="none" opacity="0.6" />
 
-      <!-- Delicate Corner Flower Blossom Vignette (Matching Reference) -->
+      <!-- Corner Flower Blossom Vignette -->
       <g transform="translate(40, 840) scale(0.65)" opacity="0.85">
         <circle cx="100" cy="100" r="30" fill="url(#goldGradSeams)" opacity="0.4"/>
         <path d="M100,60 C120,80 120,120 100,140 C80,120 80,80 100,60 Z" fill="url(#goldGradSeams)"/>
@@ -1150,12 +1191,21 @@
       </article>
     </div>
 
-    <!-- CLOSING CARD -->
+    <!-- CLOSING CARD WITH COMPACT TODDLER SCRIBBLE -->
     <section class="closing-card">
       <div class="families-welcome">Warmly Welcoming You From The Families of Groom &amp; Bride</div>
-      <div class="inu-note-box">
-        "Mere chachu ki shadi aur Walima mein zaroor aana!"
-        <span class="inu-sender">— With lots of love, Inu 👶✨</span>
+
+      <!-- Compact 5-Month-Old Scribble Note -->
+      <div class="toddler-note-compact">
+        <div class="tape-accent"></div>
+        <div class="paper-frame">
+          <img src="inu_scribble.jpg" alt="Inu's 5-month-old scribble" class="toddler-scribble-img" onerror="this.src='inu_scribble.png'" />
+        </div>
+        <div class="scribble-callout">
+          <span class="detect-label">🔍 5-Month-Old Baby Scribble Translation:</span>
+          <p class="trans-text">"Mere chachu ki shadi aur walima mein zaroor zaroor aana!"</p>
+          <span class="inu-byline">— Dictated by baby Inu (5 months old) 👶🍼✨</span>
+        </div>
       </div>
     </section>
   </main>
@@ -1268,7 +1318,6 @@
       applyTheme(!isCurrentlyCrimson);
     });
 
-    // Check user preference (defaults to Emerald if unset)
     const savedTheme = localStorage.getItem('wedding_theme_pref');
     if (savedTheme === 'crimson') {
       applyTheme(true);
